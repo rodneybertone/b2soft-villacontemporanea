@@ -2,45 +2,456 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta
+        http-equiv="X-UA-Compatible"
+        content="IE=edge"
+    >
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <!-- SEO -->
     <title>Villa Contemporânea | Cardápio Digital</title>
 
-    <meta name="description" content="Cardápio Digital Villa Contemporânea">
+    <meta
+        name="description"
+        content="Confira o cardápio digital da Villa Contemporânea. Consulte pratos, opções e informações do restaurante."
+    >
 
-    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <meta
+        name="googlebot"
+        content="index, follow"
+    >
+
+    <link
+        rel="canonical"
+        href="https://villacontemporanea.b2soft.com.br/"
+    >
+
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="/assets/images/favicon.png"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="/assets/images/favicon.png"
+    >
+
+    <!-- Open Graph -->
+    <meta
+        property="og:type"
+        content="website"
+    >
+
+    <meta
+        property="og:title"
+        content="Villa Contemporânea | Cardápio Digital"
+    >
+
+    <meta
+        property="og:description"
+        content="Confira o cardápio digital da Villa Contemporânea."
+    >
+
+    <meta
+        property="og:url"
+        content="https://villacontemporanea.b2soft.com.br/"
+    >
+
+    <meta
+        property="og:site_name"
+        content="Villa Contemporânea"
+    >
+
+    <meta
+        property="og:locale"
+        content="pt_BR"
+    >
+
+    <!-- Performance -->
+    <link
+        rel="preconnect"
+        href="https://www.pededaki.com.br"
+    >
 
     <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         html,
         body {
             width: 100%;
             height: 100%;
-            padding: 0;
             margin: 0;
-            overflow: hidden;
-            background-color: #000;
+            padding: 0;
         }
 
+        body {
+            background: #000;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+
+        /*
+         * Conteúdo textual para SEO e acessibilidade.
+         */
+        .seo-content {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /*
+         * Container principal
+         */
+        .cardapio-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 100vh;
+            background: #000;
+        }
+
+        /*
+         * Iframe
+         */
         #preview-frame {
             display: block;
             width: 100%;
-            height: 100vh;
+            height: 100%;
+            min-height: 100vh;
             border: 0;
-            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        /*
+         * Tela de carregamento
+         */
+        .loading {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            background: #fff;
+
+            transition:
+                opacity 0.3s ease,
+                visibility 0.3s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 42px;
+            height: 42px;
+
+            border: 4px solid #e5e5e5;
+            border-top-color: #0798f0;
+            border-radius: 50%;
+
+            animation: spinner 0.8s linear infinite;
+        }
+
+        .loading-text {
+            margin-top: 16px;
+
+            color: #555;
+
+            font-size: 15px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /*
+         * Fallback
+         */
+        .fallback {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px;
+
+            background: #fff;
+
+            text-align: center;
+        }
+
+        .fallback.visible {
+            display: flex;
+        }
+
+        .fallback-content {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .fallback h1 {
+            margin: 0 0 12px;
+
+            color: #123f63;
+
+            font-size: 28px;
+            line-height: 1.25;
+        }
+
+        .fallback p {
+            margin: 0 0 24px;
+
+            color: #555;
+
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .fallback-button {
+            display: inline-block;
+
+            padding: 13px 24px;
+
+            border-radius: 6px;
+
+            background: #0798f0;
+            color: #fff;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .fallback-button:hover {
+            background: #057fc9;
+            transform: translateY(-1px);
+        }
+
+        .fallback-button:focus {
+            outline: 3px solid rgba(7, 152, 240, 0.3);
+            outline-offset: 3px;
+        }
+
+        /*
+         * Responsividade
+         */
+        @media (max-width: 768px) {
+
+            .fallback {
+                padding: 20px;
+            }
+
+            .fallback h1 {
+                font-size: 24px;
+            }
+
+            .fallback p {
+                font-size: 15px;
+            }
+
+            .fallback-button {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+
+        /*
+         * Redução de movimento
+         */
+        @media (prefers-reduced-motion: reduce) {
+
+            .loading-spinner {
+                animation: none;
+            }
+
+            .loading,
+            .fallback-button {
+                transition: none;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <iframe
-        id="preview-frame"
-        src="https://www.pededaki.com.br/villacontemporanea"
-        name="preview-frame"
-        frameborder="0"
-        allowfullscreen>
-    </iframe>
+    <!--
+        Conteúdo textual básico para SEO e acessibilidade.
+    -->
+    <div class="seo-content">
+        <h1>Villa Contemporânea — Cardápio Digital</h1>
+
+        <p>
+            Confira o cardápio digital da Villa Contemporânea.
+            Consulte pratos, opções e informações do restaurante.
+        </p>
+    </div>
+
+    <main
+        class="cardapio-container"
+        aria-label="Cardápio Digital Villa Contemporânea"
+    >
+
+        <!-- Carregamento -->
+        <div
+            id="loading"
+            class="loading"
+            role="status"
+            aria-live="polite"
+        >
+            <div
+                class="loading-spinner"
+                aria-hidden="true"
+            ></div>
+
+            <div class="loading-text">
+                Carregando o cardápio...
+            </div>
+        </div>
+
+        <!--
+            Cardápio Digital
+            Fonte: PeDeDaKi
+        -->
+        <iframe
+            id="preview-frame"
+            src="https://www.pededaki.com.br/villacontemporanea"
+            title="Cardápio Digital Villa Contemporânea"
+            name="preview-frame"
+            loading="eager"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+
+        <!-- Fallback -->
+        <div
+            id="fallback"
+            class="fallback"
+            role="alert"
+            aria-live="assertive"
+        >
+            <div class="fallback-content">
+
+                <h1>
+                    Cardápio Villa Contemporânea
+                </h1>
+
+                <p>
+                    Não foi possível carregar o cardápio
+                    neste momento.
+                    Você pode abrir o Cardápio Digital
+                    diretamente.
+                </p>
+
+                <a
+                    class="fallback-button"
+                    href="https://www.pededaki.com.br/villacontemporanea"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Abrir Cardápio Digital
+                </a>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        (function () {
+
+            'use strict';
+
+            const iframe = document.getElementById('preview-frame');
+            const loading = document.getElementById('loading');
+            const fallback = document.getElementById('fallback');
+
+            let iframeLoaded = false;
+
+            /*
+             * Quando o iframe terminar de carregar,
+             * remove a tela de carregamento.
+             */
+            iframe.addEventListener('load', function () {
+
+                iframeLoaded = true;
+
+                loading.classList.add('hidden');
+
+            });
+
+            /*
+             * Timeout de segurança.
+             *
+             * Se o iframe não carregar em 15 segundos,
+             * exibe o fallback.
+             */
+            const fallbackTimeout = setTimeout(function () {
+
+                if (!iframeLoaded) {
+
+                    loading.classList.add('hidden');
+
+                    fallback.classList.add('visible');
+
+                }
+
+            }, 15000);
+
+            /*
+             * Cancela o timeout depois do carregamento.
+             */
+            iframe.addEventListener('load', function () {
+
+                clearTimeout(fallbackTimeout);
+
+            });
+
+        })();
+    </script>
 
 </body>
 </html>
